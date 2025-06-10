@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.foxyas.transformationsAPI.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "transformations.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}
