@@ -18,7 +18,7 @@ public interface IPlayerDataExtension {
     void setCurrentTransformation(@Nullable Transformation transformation);
 
     // Chame no evento de save/load player data
-    public static void saveTransformationData(Player player, CompoundTag tag) {
+    static void saveTransformationData(Player player, CompoundTag tag) {
         IPlayerDataExtension trans = (IPlayerDataExtension) player;
         Transformation current = trans.getCurrentTransformation();
         if (current != null) {
@@ -26,7 +26,7 @@ public interface IPlayerDataExtension {
         }
     }
 
-    public static void loadTransformationData(Player player, CompoundTag tag) {
+    static void loadTransformationData(Player player, CompoundTag tag) {
         if (tag.contains("TransformationId") && tag.getString("TransformationId").isPresent()) {
             ResourceLocation id = ResourceLocation.tryParse(tag.getString("TransformationId").get());
             if (id != null) {

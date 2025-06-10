@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_16",
   "refmap": "transformations.refmap.json",
   "mixins": [
+    "entities.players.PlayerMixin"
   ],
   "client": [
   ],
