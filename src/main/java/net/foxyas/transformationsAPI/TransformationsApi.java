@@ -3,7 +3,10 @@ package net.foxyas.transformationsAPI;
 import com.mojang.logging.LogUtils;
 import net.foxyas.transformationsAPI.init.TransformationsInit;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.profiling.jfr.event.NetworkSummaryEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -15,12 +18,15 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.SimpleChannel;
 import net.minecraftforge.registries.NewRegistryEvent;
 import org.slf4j.Logger;
 
-import static org.apache.http.params.CoreProtocolPNames.PROTOCOL_VERSION;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 
 @Mod(TransformationsApi.MODID)
 public class TransformationsApi {
