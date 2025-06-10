@@ -17,7 +17,7 @@ public interface IPlayerDataExtension {
         IPlayerDataExtension trans = (IPlayerDataExtension) player;
         Transformation current = trans.getCurrentTransformation();
         if (current != null) {
-            tag.putString("TransformationId", current.getId().toString());
+            tag.putString("TransformationId", current.getName().toString());
         }
     }
 
