@@ -30,7 +30,7 @@ public class TransformationsApi {
     public static ResourceLocation resource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
-    
+
     //TODO Add sync Packet for transformations
 
     public TransformationsApi(FMLJavaModLoadingContext context) {
