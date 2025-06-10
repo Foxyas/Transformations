@@ -15,8 +15,12 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.SimpleChannel;
 import net.minecraftforge.registries.NewRegistryEvent;
 import org.slf4j.Logger;
+
+import static org.apache.http.params.CoreProtocolPNames.PROTOCOL_VERSION;
 
 @Mod(TransformationsApi.MODID)
 public class TransformationsApi {
@@ -26,6 +30,8 @@ public class TransformationsApi {
     public static ResourceLocation resource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
+    
+    //TODO Add sync Packet for transformations
 
     public TransformationsApi(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();

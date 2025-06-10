@@ -9,6 +9,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.*;
 
+import java.util.HashMap;
+import java.util.function.Supplier;
+
 public class TransformationsInit {
     public static final ResourceKey<Registry<Transformation>> REGISTRY_KEY =
             ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TransformationsApi.MODID, "transformations"));
