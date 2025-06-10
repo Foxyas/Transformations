@@ -26,7 +26,7 @@ public interface IPlayerDataExtension {
             ResourceLocation id = ResourceLocation.tryParse(tag.getString("TransformationId").get());
             if (id != null) {
                 // Obtém o registro real das transformations
-                Registry<Transformation> registry = TransformationsInit.TRANSFORMATION_REGISTRY_KEY.getOrThrow(player).get();
+                Registry<Transformation> registry = TransformationsInit.TRANSFORMATIONS.getRegistryKey().getOrThrow(player).get();
                 if (registry.get(id).isPresent()) {
                     Transformation transformation = registry.get(id).get().get();
                     if (transformation != null) {

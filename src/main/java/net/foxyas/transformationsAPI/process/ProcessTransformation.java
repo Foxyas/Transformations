@@ -2,6 +2,7 @@ package net.foxyas.transformationsAPI.process;
 
 import net.foxyas.transformationsAPI.entity.playerExtension.IPlayerDataExtension;
 import net.foxyas.transformationsAPI.init.ModBuildInTransformations;
+import net.foxyas.transformationsAPI.init.TransformationsInit;
 import net.foxyas.transformationsAPI.transformations.Transformation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,17 +24,16 @@ public class ProcessTransformation {
     public static class EventDebug {
 
         @SubscribeEvent
-        public static void eat(final LivingEntityUseItemEvent.Finish event) {
+        public static void eat(final LivingEntityUseItemEvent.Start event) {
             if (!(event.getEntity() instanceof Player player))
                 return;
 
             ItemStack itemStack = event.getItem();
             if (itemStack.is(Items.COD)) {
-
-                if (itemStack.getItem() == Items.ROTTEN_FLESH) {
+                if (!TransformationsInit.FIRE_TRANSFORMATION.isPresent()) {
                     System.out.println("Player eat: " + itemStack.getItem().getDescriptionId());
-                    TransformPlayer(player, ModBuildInTransformations.FORM_DEV.get());
                 }
+                TransformPlayer(player, TransformationsInit.FIRE_TRANSFORMATION.get());
             }
         }
     }
