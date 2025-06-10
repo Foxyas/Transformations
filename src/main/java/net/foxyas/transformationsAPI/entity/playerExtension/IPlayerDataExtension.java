@@ -6,6 +6,9 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
 
 public interface IPlayerDataExtension {
@@ -25,18 +28,13 @@ public interface IPlayerDataExtension {
         if (tag.contains("TransformationId") && tag.getString("TransformationId").isPresent()) {
             ResourceLocation id = ResourceLocation.tryParse(tag.getString("TransformationId").get());
             if (id != null) {
-                // Obtém o registro real das transformations
-                Registry<Transformation> registry = TransformationsInit.TRANSFORMATIONS.getRegistryKey().getOrThrow(player).get();
-                if (registry.get(id).isPresent()) {
-                    Transformation transformation = registry.get(id).get().get();
-                    if (transformation != null) {
-                        ((IPlayerDataExtension) player).setCurrentTransformation(transformation);
-                    }
+                // Obtém o Registry do Transformation via RegistryAccess do level do player
+                Transformation transformation = TransformationsInit.TRANSFORMATIONS.getRegistryKey().getOrThrow(player).get().getValue(id);
+                if (transformation != null) {
+                    ((IPlayerDataExtension) player).setCurrentTransformation(transformation);
                 }
             }
         }
     }
-
-
 
 }

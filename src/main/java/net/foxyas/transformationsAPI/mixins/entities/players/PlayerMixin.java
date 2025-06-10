@@ -40,6 +40,5 @@ public class PlayerMixin implements IPlayerDataExtension {
 
     @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
     private void loadSaveData(CompoundTag tag, CallbackInfo ci) {
-        IPlayerDataExtension.loadTransformationData(getSelf(), tag);
     }
 }
