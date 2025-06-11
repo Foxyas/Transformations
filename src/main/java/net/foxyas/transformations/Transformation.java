@@ -33,7 +33,7 @@ public class Transformation {
 
     protected final ImmutableMultimap<Holder<Attribute>, AttributeModifier> modifiers;
     //ModelProperties modelProperties; <- contains colors, texture id, model id, etc. (model looked up on client & loaded from assets?) 
-   /*Todo: [Foxyas: The Client will get the model ID of the tranformation and then load the modoel with such name, the Texture will need to be added via an resourcepack or it could have an cache folder that would save the image frok the server to the client but idk if that would be an good option]*/
+   /*Todo: [Foxyas: The Client will get the model ID of the tranformation and then load the modoel with such name, the Texture will need to be added via an resourcepack or it could have an cache folder that would save the image from the server to the client but idk if that would be an good option]*/
     //List<Ability> abilities;
 
     public Transformation(ImmutableMultimap<Holder<Attribute>, AttributeModifier> modifiers){
