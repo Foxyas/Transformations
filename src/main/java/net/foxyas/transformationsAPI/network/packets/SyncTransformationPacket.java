@@ -34,7 +34,7 @@ public class SyncTransformationPacket {
         }
         System.out.println("Servidor recebeu transformação: " + transformationId + " de " + player.getName().getString());
         try {
-            Transformation transformation = TransformationsInit.TRANSFORMATIONS.getRegistryKey().getOrThrow(player).get().getValue(transformationId);
+            Transformation transformation = TransformationsInit.TRANSFORMATIONS_REGISTRY.get().getValue(transformationId);
             ProcessTransformation.TransformPlayer(player, transformation);
         } catch (Exception e) {
             throw e;

@@ -16,8 +16,18 @@ public class TransformationsInit {
     public static final ResourceKey<Registry<Transformation>> REGISTRY_KEY =
             ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TransformationsApi.MODID, "transformations"));
 
+
     public static final DeferredRegister<Transformation> TRANSFORMATIONS =
             DeferredRegister.create(REGISTRY_KEY, TransformationsApi.MODID);
+
+    // Este holder representa seu registry customizado (criado durante NewRegistryEvent)
+    public static final DeferredRegister.RegistryHolder<Transformation> TRANSFORMATIONS_REGISTRY =
+            TRANSFORMATIONS.makeRegistry(() -> new RegistryBuilder<Transformation>()
+                    .hasTags()
+                    .setName(REGISTRY_KEY.location())
+                    .setMaxID(Integer.MAX_VALUE)
+                    .setDefaultKey(ResourceLocation.fromNamespaceAndPath(TransformationsApi.MODID, "empty"))
+            );
 
     // Exemplos de registros
     public static final RegistryObject<Transformation> FIRE_TRANSFORMATION =
@@ -33,7 +43,7 @@ public class TransformationsInit {
         TRANSFORMATIONS.register(eventBus);
 
         // Registrar o evento para criar o registry
-        eventBus.addListener(TransformationsInit::onNewRegistry);
+        //eventBus.addListener(TransformationsInit::onNewRegistry);
     }
 
     private static void onNewRegistry(NewRegistryEvent event) {

@@ -2,6 +2,7 @@ package net.foxyas.transformationsAPI.mixins.entities.players;
 
 import net.foxyas.transformationsAPI.entity.playerExtension.IPlayerDataExtension;
 import net.foxyas.transformationsAPI.transformations.Transformation;
+import net.foxyas.transformationsAPI.transformations.TransformationInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -16,16 +17,33 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ServerPlayerMixin implements IPlayerDataExtension {
 
     @Unique
-    public Transformation transformations$transformation = null;
+    public TransformationInstance transformations$transformation = null;
 
     @Override
-    public @Nullable Transformation getCurrentTransformation() {
+    public TransformationInstance getCurrentTransformation() {
         return transformations$transformation;
     }
 
     @Override
     public void setCurrentTransformation(@Nullable Transformation transformation) {
-        this.transformations$transformation = transformation;
+        if (transformation == null) {
+            this.transformations$transformation = null;
+        } else {
+            this.transformations$transformation = new TransformationInstance(getSelf(), transformation);
+        }
+    }
+
+    @Unique
+    private String pendingTransformationId = null;
+
+    @Override
+    public void setPendingTransformationId(@Nullable String id) {
+        this.pendingTransformationId = id;
+    }
+
+    @Override
+    public @Nullable String getPendingTransformationId() {
+        return pendingTransformationId;
     }
 
     @Unique
@@ -41,5 +59,6 @@ public class ServerPlayerMixin implements IPlayerDataExtension {
 
     @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
     private void loadSaveData(CompoundTag tag, CallbackInfo ci) {
+        IPlayerDataExtension.loadTransformationData(getSelf(), tag);
     }
 }
