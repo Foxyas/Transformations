@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "net.foxyas.transformations.mixins",
+  "compatibilityLevel": "JAVA_12",
+  "minVersion": "0.8.5",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+  ],
+  "client": [
+  ]
+}

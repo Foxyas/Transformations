@@ -23,6 +23,10 @@ public class Transformations {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
+    public static String resourceLocString(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path).toString();
+    }
+
     public Transformations(IEventBus modEventBus, ModContainer modContainer) {
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
