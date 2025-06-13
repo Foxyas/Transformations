@@ -18,4 +18,6 @@ public class TransformationAttachments {
                 .serialize(TransformationData.CODEC) // Optional
                 .copyOnDeath()
                 .build());
+
+    //Todo: Packet to sync this thing to the client
 }
