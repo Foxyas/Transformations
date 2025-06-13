@@ -2,6 +2,7 @@ package net.foxyas.transformations;
 
 import com.mojang.logging.LogUtils;
 import net.foxyas.transformations.client.cmrs.api.ModelPropertyRegistry;
+import net.foxyas.transformations.init.TransformationAttachments;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -37,6 +38,8 @@ public class Transformations {
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        TransformationAttachments.ATTACHMENTS.register(modEventBus);
 
         if(FMLEnvironment.dist.isClient()) ModelPropertyRegistry.PROPERTIES.register(modEventBus);//Server doesn't crash
     }
