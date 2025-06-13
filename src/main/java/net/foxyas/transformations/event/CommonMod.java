@@ -2,9 +2,7 @@ package net.foxyas.transformations.event;
 
 import net.foxyas.transformations.Transformation;
 import net.foxyas.transformations.Transformations;
-import net.foxyas.transformations.client.cmrs.CMRS;
-import net.foxyas.transformations.client.cmrs.network.ClientPacketHandler;
-import net.foxyas.transformations.client.cmrs.network.ClientboundRemovePlayerModelPacket;
+import net.foxyas.transformations.network.ClientPacketHandler;
 import net.foxyas.transformations.network.packets.TransformationDataSync;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -24,7 +22,7 @@ public class CommonMod {
     public static void onRegisterPayload(RegisterPayloadHandlersEvent event){
         PayloadRegistrar registrar = event.registrar(Transformations.MODID);
         registrar.playToClient(TransformationDataSync.TYPE, TransformationDataSync.CODEC,(payload,context) -> {
-            TransformationDataSync.handlePacket(payload, context);
+            ClientPacketHandler.INSTANCE.handlePacket(payload, context);
         });
     }
 }
