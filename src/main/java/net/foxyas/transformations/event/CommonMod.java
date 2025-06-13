@@ -23,7 +23,7 @@ public class CommonMod {
     @SubscribeEvent
     public static void onRegisterPayload(RegisterPayloadHandlersEvent event){
         PayloadRegistrar registrar = event.registrar(Transformations.MODID);
-        registrar.playToServer(TransformationDataSync.TYPE, TransformationDataSync.CODEC,(payload,context) -> {
+        registrar.playToClient(TransformationDataSync.TYPE, TransformationDataSync.CODEC,(payload,context) -> {
             TransformationDataSync.handlePacket(payload, context);
         });
     }

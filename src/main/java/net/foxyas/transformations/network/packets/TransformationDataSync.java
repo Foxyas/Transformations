@@ -38,7 +38,8 @@ public class TransformationDataSync implements CustomPacketPayload {
 
     public static void handlePacket(TransformationDataSync packet, @NotNull IPayloadContext context){
         context.enqueueWork(() -> {
-            Player player = context.player();
+            Minecraft minecraft = Minecraft.getInstance();
+            Entity entity = minecraft.level.getEntity(packet.entityId);
             //Todo: Logic Part of the data
         });
     }
