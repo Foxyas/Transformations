@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "net.foxyas.transformations.mixin",
-  "compatibilityLevel": "JAVA_12",
+  "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8.5",
   "injectors": {
     "defaultRequire": 1
