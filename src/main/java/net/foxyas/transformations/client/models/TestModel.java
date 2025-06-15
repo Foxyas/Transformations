@@ -1,8 +1,16 @@
 package net.foxyas.transformations.client.models;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.foxyas.transformations.Transformations;
+import net.foxyas.transformations.client.animations.Animations;
+import net.foxyas.transformations.client.animations.FallFlyingAnim;
+import net.foxyas.transformations.client.animations.HumanoidAnim;
+import net.foxyas.transformations.client.animations.SwimAnim;
+import net.foxyas.transformations.client.cmrs.animation.AnimationChannel;
+import net.foxyas.transformations.client.cmrs.animation.AnimationDefinition;
+import net.foxyas.transformations.client.cmrs.animation.KeyframeAnimator;
 import net.foxyas.transformations.client.cmrs.api.ModelPropertyRegistry;
 import net.foxyas.transformations.client.cmrs.geom.CubeUV;
 import net.foxyas.transformations.client.cmrs.geom.GroupBuilder;
@@ -15,12 +23,18 @@ import net.foxyas.transformations.client.cmrs.properties.*;
 import net.foxyas.transformations.client.cmrs.renderer.RenderStateSidestep;
 import net.foxyas.transformations.client.cmrs.util.Int2ObjArrayMap;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.animation.Keyframe;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Unit;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -55,7 +69,48 @@ public class TestModel <E extends LivingEntity, S extends RenderStateSidestep> e
             })));
             map.addLast(ModelPropertyRegistry.VANILLA_ELYTRA.get(), new VanillaElytra());
             map.addLast(ModelPropertyRegistry.TRIDENT_SPIN_EFFECT.get(), new TridentSpinEffect());
-        }), List.of());
+        }), List.of(HumanoidAnim.getInstance(), FallFlyingAnim.getInstance(), SwimAnim.getInstance()));
+    }
+
+    public static final AnimationDefinition STATIC_TAIL = AnimationDefinition.Builder.withLength(0f)
+            .addAnimation("tail",
+                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                            new Keyframe(0f, KeyframeAnimations.degreeVec(37.5f, 0f, 0f),
+                                    net.minecraft.client.animation.AnimationChannel.Interpolations.LINEAR)))
+            .addAnimation("tail0",
+                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                            new Keyframe(0f, KeyframeAnimations.degreeVec(-20f, 0f, 0f),
+                                    net.minecraft.client.animation.AnimationChannel.Interpolations.LINEAR)))
+            .addAnimation("tail1",
+                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                            new Keyframe(0f, KeyframeAnimations.degreeVec(-20f, 0f, 0f),
+                                    net.minecraft.client.animation.AnimationChannel.Interpolations.LINEAR)))
+            .addAnimation("tail2",
+                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                            new Keyframe(0f, KeyframeAnimations.degreeVec(-17.5f, 0f, 0f),
+                                    net.minecraft.client.animation.AnimationChannel.Interpolations.LINEAR)))
+            .addAnimation("tail3",
+                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                            new Keyframe(0f, KeyframeAnimations.degreeVec(-17.5f, 0f, 0f),
+                                    net.minecraft.client.animation.AnimationChannel.Interpolations.LINEAR)))
+            .addAnimation("tail4",
+                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                            new Keyframe(0f, KeyframeAnimations.degreeVec(-17.5f, 0f, 0f),
+                                    net.minecraft.client.animation.AnimationChannel.Interpolations.LINEAR))).build();
+
+
+    protected final AnimationState ears = new AnimationState();
+    protected final AnimationState tail = new AnimationState();
+
+    @Override
+    public void setupAnim(@NotNull E entity, @NotNull LivingEntityRenderState state, @NotNull PoseStack poseStack) {
+        super.setupAnim(entity, state, poseStack);
+        float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(entity.level().tickRateManager().runsNormally());
+        ears.startIfStopped(entity.tickCount);
+        tail.startIfStopped(entity.tickCount);
+        KeyframeAnimator.animate(ears, _root(), Animations.EAR_ANIM, entity.tickCount + partialTick);
+        KeyframeAnimator.animate(tail, _root(), Animations.TAIL_CAT, entity.tickCount + partialTick);
+        if(!entity.isInWater()) KeyframeAnimator.applyStatic(_root(), STATIC_TAIL);
     }
 
     public static ModelDefinition model(){

@@ -3,16 +3,16 @@ package net.foxyas.transformations.util;
 import net.foxyas.transformations.Transformation;
 import net.foxyas.transformations.entities.player.data.TransformationData;
 import net.foxyas.transformations.init.TransformationAttachments;
-import net.foxyas.transformations.network.packets.TransformationDataSync;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Utility class for managing a Player's Transformation.
  */
+@ParametersAreNonnullByDefault
 public final class TransformationUtils {
 
     private TransformationUtils() {
@@ -26,17 +26,10 @@ public final class TransformationUtils {
      * @param transformation   the transformation ResourceKey to assign (nullable to clear)
      * @param sync             whether to send a packet to clients (only works on server players)
      */
-    public static void setTransformation(Player player, @Nullable ResourceKey<Transformation> transformation, boolean sync) {
+    public static void setTransformation(Player player, @Nullable ResourceKey<Transformation> transformation) {
         //Todo: make it truly set the player form
 
-        if (transformation == null) {
-            throw new NullPointerException("transformation is null");
-        }
-
         player.getData(TransformationAttachments.TRANSFORMATION).setForm(transformation);
-        if (sync && player instanceof ServerPlayer serverPlayer) {
-            PacketDistributor.sendToPlayer(serverPlayer, new TransformationDataSync(serverPlayer.getId(), transformation));
-        }
     }
 
     /**

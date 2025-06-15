@@ -13,7 +13,6 @@ import net.minecraft.world.level.LevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.logging.Level;
 
 public class TransformationHandle {
 

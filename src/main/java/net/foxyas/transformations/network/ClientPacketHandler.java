@@ -3,7 +3,6 @@ package net.foxyas.transformations.network;
 import net.foxyas.transformations.Transformation;
 import net.foxyas.transformations.client.cmrs.CustomModelManager;
 import net.foxyas.transformations.client.cmrs.network.ModelSetReason;
-import net.foxyas.transformations.client.models.ModelsMap;
 import net.foxyas.transformations.entities.player.data.TransformationData;
 import net.foxyas.transformations.init.TransformationAttachments;
 import net.foxyas.transformations.network.packets.TransformationDataSync;
@@ -32,26 +31,29 @@ public final class ClientPacketHandler {
             if(!(entity instanceof Player player)) return;//TODO add err message?
 
             TransformationData data = player.getData(TransformationAttachments.TRANSFORMATION);
-            ResourceKey<Transformation> old = data.getForm();
-            data.setForm(packet.transformationKey());
-
-
+            ResourceKey<Transformation> key = data.getForm();
             RegistryAccess access = minecraft.getConnection().registryAccess();
-            Optional<Holder.Reference<Transformation>> optional = access.get(packet.transformationKey());
-            if(optional.isEmpty()) return;
-
-            Transformation transformation = optional.get().value();
+            Optional<Holder.Reference<Transformation>> optional;
+            Transformation transform;
             assert minecraft.player != null;
-            if(old != null){
-                Optional<Holder.Reference<Transformation>> optionalO = access.get(packet.transformationKey());
-                if(optionalO.isPresent()){
-                    Transformation transformationO = optionalO.get().value();
-                    //TODO remove model
-                    CustomModelManager.getInstance().removePlayerModel(minecraft.player, ModelSetReason.LOCAL);
+            if(key != null){
+                optional = access.get(key);
+                if(optional.isPresent()){
+                    transform = optional.get().value();
+
+                    CustomModelManager.getInstance().removePlayerModel(minecraft.player, transform.modelId(), 1);
                 }
             }
-            //TODO apply model
-            CustomModelManager.getInstance().setPlayerModel(minecraft.player, optional.get().key().registry(), 1);
+
+            key = packet.transformationKey();
+            data.setForm(key);
+            if(key == null) return;
+
+            optional = access.get(key);
+            if (optional.isEmpty()) return;
+            transform = optional.get().value();
+
+            CustomModelManager.getInstance().setPlayerModel(minecraft.player, transform.modelId(), 1, false, ModelSetReason.MOD);
         });
     }
 }

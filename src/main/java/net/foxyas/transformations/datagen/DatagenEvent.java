@@ -20,7 +20,7 @@ public class DatagenEvent {
         event.createDatapackRegistryObjects(
                 new RegistrySetBuilder()
                         .add(Transformations.TRANSFORMATION_REGISTRY, Lifecycle.stable(), context -> {
-                            context.register(TEST_TRANSFORMATION, new Transformation(ImmutableMultimap.of()));
+                            context.register(TEST_TRANSFORMATION, new Transformation(ImmutableMultimap.of(), Transformations.resourceLoc("test")));
                         })
         );
     }

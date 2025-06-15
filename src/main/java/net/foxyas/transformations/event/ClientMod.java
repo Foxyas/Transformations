@@ -11,7 +11,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 public class ClientMod {
 
     @SubscribeEvent
-    public static void onLoadModelsToCache(RegisterBuiltInModelsEvent event){
+    public static void onRegisterModels(RegisterBuiltInModelsEvent event){
         event.registerModelSupplier(Transformations.resourceLoc("test"), TestModel::new);
     }
 }
