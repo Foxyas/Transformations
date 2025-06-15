@@ -42,6 +42,7 @@ public class TransformationData {
         if(optional.isEmpty()) return;//ignore invalid key
 
         Transformation transformation = optional.get().value();
+        this.currentForm = formId;
 
         //TODO apply attributes, sync
     }

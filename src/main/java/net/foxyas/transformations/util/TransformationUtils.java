@@ -29,6 +29,10 @@ public final class TransformationUtils {
     public static void setTransformation(Player player, @Nullable ResourceKey<Transformation> transformation, boolean sync) {
         //Todo: make it truly set the player form
 
+        if (transformation == null) {
+            throw new NullPointerException("transformation is null");
+        }
+
         player.getData(TransformationAttachments.TRANSFORMATION).setForm(transformation);
         if (sync && player instanceof ServerPlayer serverPlayer) {
             PacketDistributor.sendToPlayer(serverPlayer, new TransformationDataSync(serverPlayer.getId(), transformation));
