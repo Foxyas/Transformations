@@ -16,7 +16,7 @@ public record TransformationDataSync(int entityId, ResourceKey<Transformation> t
     //public final int priority;
 
     public TransformationDataSync(FriendlyByteBuf buf) {
-        this(buf.readInt(), buf.readResourceKey(Transformations.TRANSFORMATION_REGISTRY));
+        this(buf.readVarInt(), buf.readResourceKey(Transformations.TRANSFORMATION_REGISTRY));
     }
 
     public static final StreamCodec<FriendlyByteBuf, TransformationDataSync> CODEC = StreamCodec.of((buf, packet) -> {

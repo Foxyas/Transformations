@@ -14,6 +14,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TransformationCommand {
 
     public static final DynamicCommandExceptionType UNKNOWN_TRANSFORMATION =
@@ -38,12 +41,31 @@ public class TransformationCommand {
                                         })))));
     }
 
+
+    public static void registerGet(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("transformations")
+                .requires(source -> source.hasPermission(2)) // permission level 2+
+                .then(Commands.literal("get").executes(context -> {
+                    List<String> transformations = new ArrayList<>();
+                    context.getSource().getServer().registryAccess()
+                            .lookupOrThrow(Transformations.TRANSFORMATION_REGISTRY)
+                            .listElements()
+                            .forEach(holder -> transformations.add(holder.getDelegate().getRegisteredName()));
+
+                    for (String transformation : transformations) {
+                        context.getSource().sendSuccess(() ->
+                                Component.literal("Transformations Available: " + transformation), true);
+                    }
+                    return 1;
+                })));
+    }
+
     private static final SuggestionProvider<CommandSourceStack> SUGGEST_TRANSFORMATIONS =
             (context, builder) -> {
                 context.getSource().getServer().registryAccess()
                         .lookupOrThrow(Transformations.TRANSFORMATION_REGISTRY)
                         .listElements()
-                        .forEach(holder -> builder.suggest(holder.key().location().toString()));
+                        .forEach(holder -> builder.suggest(holder.getDelegate().getRegisteredName()));
                 return builder.buildFuture();
             };
 

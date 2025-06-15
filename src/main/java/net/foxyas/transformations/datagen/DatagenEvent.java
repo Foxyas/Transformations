@@ -28,4 +28,7 @@ public class DatagenEvent {
     private static ResourceKey<Transformation> key(String path){
         return ResourceKey.create(Transformations.TRANSFORMATION_REGISTRY, Transformations.resourceLoc(path));
     }
+
+    //Todo: The path right now is too long and the right path should be like -> data/<ModID>/Transformations/file.json
+    //Idk if it would be possible to change it tho
 }

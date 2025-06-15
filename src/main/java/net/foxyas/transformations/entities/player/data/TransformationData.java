@@ -68,7 +68,9 @@ public class TransformationData {
         @Override
         public @Nullable CompoundTag write(@NotNull TransformationData attachment, HolderLookup.@NotNull Provider provider) {
             CompoundTag tag = new CompoundTag();
-            tag.putString("transformation", attachment.getForm().location().toString());
+            if (attachment.getForm() != null) {
+                tag.putString("transformation", attachment.getForm().location().toString());
+            }
             return tag;
         }
     }

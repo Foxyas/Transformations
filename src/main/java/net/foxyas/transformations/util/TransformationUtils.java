@@ -7,6 +7,7 @@ import net.foxyas.transformations.network.packets.TransformationDataSync;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -26,11 +27,11 @@ public final class TransformationUtils {
      * @param sync             whether to send a packet to clients (only works on server players)
      */
     public static void setTransformation(Player player, @Nullable ResourceKey<Transformation> transformation, boolean sync) {
-        TransformationData data = player.getData(TransformationAttachments.TRANSFORMATION);
-        data.setForm(transformation);
+        //Todo: make it truly set the player form
 
+        player.getData(TransformationAttachments.TRANSFORMATION).setForm(transformation);
         if (sync && player instanceof ServerPlayer serverPlayer) {
-            NetworkUtil.sendToPlayer(serverPlayer, new TransformationDataSync(serverPlayer.getId(), transformation));
+            PacketDistributor.sendToPlayer(serverPlayer, new TransformationDataSync(serverPlayer.getId(), transformation));
         }
     }
 

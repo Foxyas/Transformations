@@ -14,7 +14,7 @@ public class TransformationAttachments {
             DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, MODID);
 
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<TransformationData>> TRANSFORMATION =
-        ATTACHMENTS.register("transformation", () ->
+        ATTACHMENTS.register("current", () ->
             AttachmentType.builder(TransformationData::new)
                 .serialize(TransformationData.SERIALIZER) // Optional
                 .copyOnDeath()

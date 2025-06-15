@@ -1,6 +1,9 @@
 package net.foxyas.transformations.network;
 
 import net.foxyas.transformations.Transformation;
+import net.foxyas.transformations.client.cmrs.CustomModelManager;
+import net.foxyas.transformations.client.cmrs.network.ModelSetReason;
+import net.foxyas.transformations.client.models.ModelsMap;
 import net.foxyas.transformations.entities.player.data.TransformationData;
 import net.foxyas.transformations.init.TransformationAttachments;
 import net.foxyas.transformations.network.packets.TransformationDataSync;
@@ -24,6 +27,7 @@ public final class ClientPacketHandler {
 
     public void handlePacket(TransformationDataSync packet, @NotNull IPayloadContext context){
         context.enqueueWork(() -> {
+            assert minecraft.level != null;
             Entity entity = minecraft.level.getEntity(packet.entityId());
             if(!(entity instanceof Player player)) return;//TODO add err message?
 
@@ -37,16 +41,17 @@ public final class ClientPacketHandler {
             if(optional.isEmpty()) return;
 
             Transformation transformation = optional.get().value();
-
+            assert minecraft.player != null;
             if(old != null){
                 Optional<Holder.Reference<Transformation>> optionalO = access.get(packet.transformationKey());
                 if(optionalO.isPresent()){
                     Transformation transformationO = optionalO.get().value();
                     //TODO remove model
+                    CustomModelManager.getInstance().removePlayerModel(minecraft.player, ModelSetReason.LOCAL);
                 }
             }
-
             //TODO apply model
+            CustomModelManager.getInstance().setPlayerModel(minecraft.player, optional.get().key().registry(), 1);
         });
     }
 }

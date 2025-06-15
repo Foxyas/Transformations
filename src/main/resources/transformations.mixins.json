@@ -7,13 +7,13 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "client.cmrs.MixinBufferSource",
-    "client.cmrs.MixinClientPacketListener",
-    "client.cmrs.MixinPlayerRenderer",
-    "client.cmrs.MixinPoseStack"
   ],
   "client": [
+    "client.cmrs.MixinBufferSource",
+    "client.cmrs.MixinClientPacketListener",
     "client.cmrs.MixinEntityRenderer",
-    "client.cmrs.MixinLivingEntityRenderer"
+    "client.cmrs.MixinLivingEntityRenderer",
+    "client.cmrs.MixinPlayerRenderer",
+    "client.cmrs.MixinPoseStack"
   ]
 }

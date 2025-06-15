@@ -11,5 +11,6 @@ public class TransformationCommands {
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event) {
         TransformationCommand.register(event.getDispatcher());
+        TransformationCommand.registerGet(event.getDispatcher());
     }
 }
