@@ -75,4 +75,7 @@ public abstract class AbstractTransformationModel  <E extends LivingEntity, S ex
         return ModelDefinition.create(modelBuilder, 1, 1);
     }
 
+
+    //Todo: Make this a "builder" class
+
 }
