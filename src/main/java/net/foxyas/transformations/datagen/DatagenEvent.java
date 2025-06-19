@@ -14,6 +14,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 public class DatagenEvent {
 
     private static final ResourceKey<Transformation> TEST_TRANSFORMATION = key("test");
+    private static final ResourceKey<Transformation> HYPNO_CAT = key("hypno_cat");
 
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent.Client event){
@@ -21,6 +22,7 @@ public class DatagenEvent {
                 new RegistrySetBuilder()
                         .add(Transformations.TRANSFORMATION_REGISTRY, Lifecycle.stable(), context -> {
                             context.register(TEST_TRANSFORMATION, new Transformation(ImmutableMultimap.of(), Transformations.resourceLoc("test")));
+                            context.register(HYPNO_CAT, new Transformation(ImmutableMultimap.of(), Transformations.resourceLoc("hypno_cat")));
                         })
         );
     }

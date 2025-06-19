@@ -22,23 +22,23 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public abstract class AbstractTransformationModel  <E extends LivingEntity, S extends RenderStateSidestep> extends UniversalCustomModel<E, S> {
+public abstract class AbstractTransformationModel<E extends LivingEntity, S extends RenderStateSidestep> extends UniversalCustomModel<E, S> {
 
     private static final ResourceLocation TEXTURE = Transformations.textureLoc("model_name");
 
     public AbstractTransformationModel() {
         super(model().bake(), Util.make(new ModelPropertyMapImpl(), map -> {
 
-            //TextureStuff
+            /// TextureStuff
             map.addLast(ModelPropertyRegistry.REMAP_UV.get(), Unit.INSTANCE);
             map.addLast(ModelPropertyRegistry.TEXTURES.get(), new Textures(Util.make(new Int2ObjArrayMap<>(2), m -> {
                 m.put(0, Texture.fromAsset(TEXTURE, 2));
             })));
 
-            //Head
+            /// Head
             map.addLast(ModelPropertyRegistry.HEAD.get(), "head");
 
-            //UI stuff such hands in first person
+            /// UI stuff such hands in first person
             map.addLast(ModelPropertyRegistry.FP_ARMS.get(), new FPArms(
                     "right_arm", new PartTransform(false, new Vector3f(-6, 1.5f, -2), false, new Vector3f(Float.POSITIVE_INFINITY, Mth.DEG_TO_RAD * 5, Mth.DEG_TO_RAD * 180), true, new Vector3f(-.1f)),
                     "left_arm", new PartTransform(false, new Vector3f(5, 1.5f, 0), false, new Vector3f(Float.POSITIVE_INFINITY, Mth.DEG_TO_RAD * -5, Mth.DEG_TO_RAD * 180), true, new Vector3f(-.1f))
@@ -48,7 +48,7 @@ public abstract class AbstractTransformationModel  <E extends LivingEntity, S ex
                     "left_arm", new PoseTransform(new Vector3f(-1 / 16f, 0, 0), null, new Vector3f(-1, -1, 1))
             ));
 
-            //Armor
+            /// Armor
             map.addLast(ModelPropertyRegistry.ARMOR.get(), new Armor(Util.make(new Int2ObjectArrayMap<>(), m -> {
                 m.put(2, EquipmentSlot.HEAD);
                 m.put(3, EquipmentSlot.CHEST);
@@ -56,16 +56,18 @@ public abstract class AbstractTransformationModel  <E extends LivingEntity, S ex
                 m.put(5, EquipmentSlot.FEET);
             }), new Int2ObjectArrayMap<>(0)));
 
-            //Glow Layer
+            /// Glow Layer
             map.addLast(ModelPropertyRegistry.GLOW.get(), new Glow(Util.make(new Int2IntArrayMap(), m -> {
                 m.put(1, 0);
             })));
 
 
-            //Extra Layer Stuff
+            /// Extra Layer Stuff
             map.addLast(ModelPropertyRegistry.VANILLA_ELYTRA.get(), new VanillaElytra());
             map.addLast(ModelPropertyRegistry.TRIDENT_SPIN_EFFECT.get(), new TridentSpinEffect());
-        }), List.of());
+        }),
+                /// Animations
+                List.of());
     }
 
     //Example of a "model"
@@ -74,8 +76,5 @@ public abstract class AbstractTransformationModel  <E extends LivingEntity, S ex
         GroupDefinition groupDefinition = modelBuilder.getRoot();
         return ModelDefinition.create(modelBuilder, 1, 1);
     }
-
-
-    //Todo: Make this a "builder" class
 
 }
