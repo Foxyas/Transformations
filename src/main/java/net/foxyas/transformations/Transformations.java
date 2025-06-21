@@ -20,7 +20,7 @@ public class Transformations {
 
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final ResourceKey<Registry<Transformation>> TRANSFORMATION_REGISTRY = ResourceKey.createRegistryKey(resourceLoc("transformation"));
+    public static final ResourceKey<Registry<Transformation>> TRANSFORMATION_REGISTRY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("transformation"));
 
     public static ResourceLocation resourceLoc(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);

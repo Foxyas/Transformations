@@ -3,6 +3,7 @@ package net.foxyas.transformations.event;
 import net.foxyas.transformations.Transformations;
 import net.foxyas.transformations.client.cmrs.event.RegisterBuiltInModelsEvent;
 import net.foxyas.transformations.client.models.HypnoCatModel;
+import net.foxyas.transformations.client.models.SimplePlayerModel;
 import net.foxyas.transformations.client.models.TestModel;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -15,5 +16,6 @@ public class ClientMod {
     public static void onRegisterModels(RegisterBuiltInModelsEvent event){
         event.registerModelSupplier(Transformations.resourceLoc("test"), TestModel::new);
         event.registerModelSupplier(Transformations.resourceLoc("hypno_cat"), HypnoCatModel::new);
+        event.registerModelSupplier(Transformations.resourceLoc("player"), SimplePlayerModel::new);
     }
 }
