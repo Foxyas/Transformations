@@ -125,6 +125,18 @@ public class ModelPart {
         z = part.z;
     }
 
+    public void copyTo(net.minecraft.client.model.geom.ModelPart part) {
+        part.xScale = xScale;
+        part.yScale = yScale;
+        part.zScale = zScale;
+        part.xRot = xRot;
+        part.yRot = yRot;
+        part.zRot = zRot;
+        part.x = x;
+        part.y = y;
+        part.z = z;
+    }
+
     public boolean hasChild(String name) {
         return this.children.containsKey(name);
     }

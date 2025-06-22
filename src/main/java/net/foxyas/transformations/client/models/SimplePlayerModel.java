@@ -1,38 +1,21 @@
 package net.foxyas.transformations.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.foxyas.transformations.Transformations;
-import net.foxyas.transformations.client.animations.Animations;
 import net.foxyas.transformations.client.animations.FallFlyingAnim;
 import net.foxyas.transformations.client.animations.HumanoidAnim;
 import net.foxyas.transformations.client.animations.SwimAnim;
-import net.foxyas.transformations.client.cmrs.animation.AnimationChannel;
-import net.foxyas.transformations.client.cmrs.animation.AnimationDefinition;
-import net.foxyas.transformations.client.cmrs.animation.KeyframeAnimator;
-import net.foxyas.transformations.client.cmrs.api.ModelPropertyRegistry;
 import net.foxyas.transformations.client.cmrs.geom.CubeUV;
 import net.foxyas.transformations.client.cmrs.geom.GroupBuilder;
 import net.foxyas.transformations.client.cmrs.geom.GroupDefinition;
 import net.foxyas.transformations.client.cmrs.geom.ModelDefinition;
-import net.foxyas.transformations.client.cmrs.model.PartTransform;
-import net.foxyas.transformations.client.cmrs.model.PoseTransform;
 import net.foxyas.transformations.client.cmrs.model.UniversalCustomModel;
 import net.foxyas.transformations.client.cmrs.properties.*;
 import net.foxyas.transformations.client.cmrs.renderer.RenderStateSidestep;
-import net.foxyas.transformations.client.cmrs.util.Int2ObjArrayMap;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.animation.Keyframe;
-import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.util.Unit;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -45,12 +28,13 @@ public class SimplePlayerModel<E extends LivingEntity, S extends RenderStateSide
 
     public SimplePlayerModel() {
         super(bodyLayer().bake(), Util.make(new ModelPropertyMapImpl(), map -> {
-            ModelBuilderHelper.addTextureMap(map, TEXTURE);
+            ModelBuilderHelper.setRemapUV(map);
+            ModelBuilderHelper.addTexture(map, TEXTURE);
             ModelBuilderHelper.addHeadMap(map, "head");
-            ModelBuilderHelper.addFPArmsMap(map);
+            ModelBuilderHelper.addFPArms(map);
             ModelBuilderHelper.addItemInHandLayer(map);
-            ModelBuilderHelper.addArmorMap(map);
-            ModelBuilderHelper.addGlowMap(map);
+            ModelBuilderHelper.addVanillaHumanoidArmor(map);
+            ModelBuilderHelper.addGlow(map);
             ModelBuilderHelper.addVanillaStuffMap(map);
         }), List.of(HumanoidAnim.getInstance(), FallFlyingAnim.getInstance(), SwimAnim.getInstance()));
     }
