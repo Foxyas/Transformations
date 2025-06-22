@@ -7,9 +7,7 @@ import net.foxyas.transformations.client.cmrs.api.ModelPropertyRegistry;
 import net.foxyas.transformations.client.cmrs.model.PartTransform;
 import net.foxyas.transformations.client.cmrs.model.PoseTransform;
 import net.foxyas.transformations.client.cmrs.properties.*;
-import net.foxyas.transformations.client.cmrs.util.Int2ObjArrayMap;
 import net.minecraft.Util;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,15 +20,9 @@ public class ModelBuilderHelper {
         map.addLast(ModelPropertyRegistry.REMAP_UV.get(), Unit.INSTANCE);
     }
 
-    public static void addTexture(ModelPropertyMap map, ResourceLocation texture) {
-        map.addLast(ModelPropertyRegistry.TEXTURES.get(), new Textures(Util.make(new Int2ObjArrayMap<>(2), m -> {
-            m.put(0, Texture.fromAsset(texture, 1));
-        })));
-    }
-
-    public static void addTexture(ModelPropertyMap map, ResourceLocation texture, float scale) {
-        map.addLast(ModelPropertyRegistry.TEXTURES.get(), new Textures(Util.make(new Int2ObjArrayMap<>(2), m -> {
-            m.put(0, Texture.fromAsset(texture, scale));
+    public static void addCutOut(ModelPropertyMap map, int renderId, int textureId) {
+        map.addLast(ModelPropertyRegistry.CUT_OUT.get(), new CutOut(Util.make(new Int2IntArrayMap(2), m -> {
+            m.put(renderId, textureId);
         })));
     }
 
@@ -80,9 +72,9 @@ public class ModelBuilderHelper {
         }), new Int2ObjectArrayMap<>(0)));
     }
 
-    public static void addGlow(ModelPropertyMap map) {
+    public static void addGlow(ModelPropertyMap map, int renderId, int textureId) {
         map.addLast(ModelPropertyRegistry.GLOW.get(), new Glow(Util.make(new Int2IntArrayMap(), m -> {
-            m.put(1, 0);
+            m.put(renderId, textureId);
         })));
     }
 

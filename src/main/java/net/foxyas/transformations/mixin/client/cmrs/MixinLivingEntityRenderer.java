@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -101,7 +102,7 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity, S extend
     @ModifyExpressionValue(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;shouldRenderLayers(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;)Z"),
             method = "render(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V")
     private boolean renderLayers(boolean original, @Local(argsOnly = true) PoseStack poseStack, @Local(argsOnly = true) MultiBufferSource bufferSource, @Local(argsOnly = true) S state, @Local(argsOnly = true) int light) {
-        if (original) return true;
+        if (state instanceof PlayerRenderState pl && pl.isSpectator) return true;
         boolean noFlipModel = model instanceof NoYFlip;
         boolean noFlipLayers = !cmrs$noFlipLayers.isEmpty();
 
@@ -112,7 +113,7 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity, S extend
             }
             if(model instanceof CustomModel<?> m) ((CustomModel<LivingEntity>)m).renderLayers(state.getRenderData(CMRS.LIVING), state, poseStack, light);
             if(noFlipLayers) cmrs$noFlipLayers.forEach(layer -> layer.render(poseStack, bufferSource, light, state, state.yRot, state.xRot));
-        } else if (!noFlipModel) return false;
+        } else if (!noFlipModel) return original;
 
         poseStack.scale(-1, -1, 1);
         poseStack.translate(0, -1.501, 0);

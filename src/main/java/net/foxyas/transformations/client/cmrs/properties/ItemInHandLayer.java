@@ -18,14 +18,14 @@ import net.minecraft.world.item.Items;
 import net.foxyas.transformations.client.cmrs.api.CustomModel;
 import net.foxyas.transformations.client.cmrs.api.MatrixStack;
 import net.foxyas.transformations.client.cmrs.api.ModelPropertyRegistry;
-import net.foxyas.transformations.client.cmrs.api.RenderLayerLike;
+import net.foxyas.transformations.client.cmrs.api.RenderLayer;
 import net.foxyas.transformations.client.cmrs.geom.ModelPart;
 import net.foxyas.transformations.client.cmrs.model.PoseTransform;
 import net.foxyas.transformations.client.cmrs.util.StreamCodecUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class ItemInHandLayer implements RenderLayerLike {
+public final class ItemInHandLayer implements RenderLayer {
 //absolute translate, rotate, scale for now(not additive)
     public static final StreamCodec<FriendlyByteBuf, ItemInHandLayer> CODEC = StreamCodec.of((buffer, itemInHand) -> {
             StreamCodecUtils.writeOptionally(itemInHand.armR, itemInHand.armR != null, buffer, ByteBufCodecs.STRING_UTF8);

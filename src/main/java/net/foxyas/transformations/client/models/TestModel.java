@@ -18,10 +18,10 @@ import net.foxyas.transformations.client.cmrs.geom.GroupDefinition;
 import net.foxyas.transformations.client.cmrs.geom.ModelDefinition;
 import net.foxyas.transformations.client.cmrs.model.PartTransform;
 import net.foxyas.transformations.client.cmrs.model.PoseTransform;
+import net.foxyas.transformations.client.cmrs.model.Texture;
 import net.foxyas.transformations.client.cmrs.model.UniversalCustomModel;
 import net.foxyas.transformations.client.cmrs.properties.*;
 import net.foxyas.transformations.client.cmrs.renderer.RenderStateSidestep;
-import net.foxyas.transformations.client.cmrs.util.Int2ObjArrayMap;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.Keyframe;
@@ -44,10 +44,10 @@ public class TestModel <E extends LivingEntity, S extends RenderStateSidestep> e
     private static final ResourceLocation TEXTURE = Transformations.textureLoc("test_model");
 
     public TestModel() {
-        super(model().bake(), Util.make(new ModelPropertyMapImpl(), map -> {
+        super(model().bake(), List.of(Texture.fromAsset(TEXTURE, 2)), Util.make(new ModelPropertyMapImpl(), map -> {
             map.addLast(ModelPropertyRegistry.REMAP_UV.get(), Unit.INSTANCE);
-            map.addLast(ModelPropertyRegistry.TEXTURES.get(), new Textures(Util.make(new Int2ObjArrayMap<>(2), m -> {
-                m.put(0, Texture.fromAsset(TEXTURE, 2));
+            map.addLast(ModelPropertyRegistry.CUT_OUT.get(), new CutOut(Util.make(new Int2IntArrayMap(2), m -> {
+                m.put(0, 0);
             })));
             map.addLast(ModelPropertyRegistry.HEAD.get(), "head");
             map.addLast(ModelPropertyRegistry.FP_ARMS.get(), new FPArms(

@@ -1,4 +1,4 @@
-package net.foxyas.transformations.client.cmrs.properties;
+package net.foxyas.transformations.client.cmrs.model;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;

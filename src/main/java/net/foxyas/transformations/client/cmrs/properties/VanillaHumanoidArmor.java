@@ -2,7 +2,8 @@ package net.foxyas.transformations.client.cmrs.properties;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.foxyas.transformations.client.cmrs.api.CustomModel;
-import net.foxyas.transformations.client.cmrs.api.RenderLayerLike;
+import net.foxyas.transformations.client.cmrs.api.MatrixStack;
+import net.foxyas.transformations.client.cmrs.api.RenderLayer;
 import net.foxyas.transformations.client.cmrs.geom.ModelPart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -19,8 +20,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.Equippable;
 import org.jetbrains.annotations.NotNull;
-
-public class VanillaHumanoidArmor implements RenderLayerLike {
+//This is bad but it works
+public class VanillaHumanoidArmor implements RenderLayer {
 
     private static VanillaHumanoidArmor instance;
     private static EquipmentLayerRenderer r;
@@ -35,10 +36,10 @@ public class VanillaHumanoidArmor implements RenderLayerLike {
 
     @Override
     public <E extends LivingEntity> void render(@NotNull E livingEntity, @NotNull LivingEntityRenderState state, @NotNull CustomModel<E> model, @NotNull PoseStack matrixStack, @NotNull MultiBufferSource buffer, int packedLight) {
-        renderArmorPiece(model, matrixStack, buffer, getEquipmentIfRenderable(livingEntity, EquipmentSlot.CHEST), EquipmentSlot.CHEST, packedLight);
-        renderArmorPiece(model, matrixStack, buffer, getEquipmentIfRenderable(livingEntity, EquipmentSlot.LEGS), EquipmentSlot.LEGS, packedLight);
-        renderArmorPiece(model, matrixStack, buffer, getEquipmentIfRenderable(livingEntity, EquipmentSlot.FEET), EquipmentSlot.FEET, packedLight);
-        renderArmorPiece(model, matrixStack, buffer, getEquipmentIfRenderable(livingEntity, EquipmentSlot.HEAD), EquipmentSlot.HEAD, packedLight);
+        renderArmorPiece(livingEntity ,model, matrixStack, buffer, getEquipmentIfRenderable(livingEntity, EquipmentSlot.CHEST), EquipmentSlot.CHEST, packedLight);
+        renderArmorPiece(livingEntity ,model, matrixStack, buffer, getEquipmentIfRenderable(livingEntity, EquipmentSlot.LEGS), EquipmentSlot.LEGS, packedLight);
+        renderArmorPiece(livingEntity ,model, matrixStack, buffer, getEquipmentIfRenderable(livingEntity, EquipmentSlot.FEET), EquipmentSlot.FEET, packedLight);
+        renderArmorPiece(livingEntity ,model, matrixStack, buffer, getEquipmentIfRenderable(livingEntity, EquipmentSlot.HEAD), EquipmentSlot.HEAD, packedLight);
     }
 
     private static ItemStack getEquipmentIfRenderable(LivingEntity entity, EquipmentSlot slot) {
@@ -61,19 +62,66 @@ public class VanillaHumanoidArmor implements RenderLayerLike {
         return inner;
     }
 
-    private void renderArmorPiece(CustomModel<?> model, PoseStack poseStack, MultiBufferSource bufferSource, ItemStack armorItem, EquipmentSlot slot, int packedLight) {
+    private <E extends LivingEntity> void renderArmorPiece(@NotNull E livingEntity, CustomModel<?> model, PoseStack poseStack, MultiBufferSource bufferSource, ItemStack armorItem, EquipmentSlot slot, int packedLight) {
         Equippable equippable = armorItem.get(DataComponents.EQUIPPABLE);
         if(equippable == null) return;
 
-        HumanoidModel<?> armor = slot == EquipmentSlot.LEGS ? inner : outer;
+        HumanoidModel<?> armor = slot == EquipmentSlot.LEGS ? inner() : outer();
         copyPropertiesTo(model, armor);
         setPartVisibility(armor, slot);
         EquipmentClientInfo.LayerType equipmentclientinfo$layertype = slot == EquipmentSlot.LEGS
                 ? EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS
                 : EquipmentClientInfo.LayerType.HUMANOID;
+        MatrixStack.push(poseStack);
+
+        switch (slot){
+            case HEAD -> {
+                armor.head.yRot *= -1;
+                armor.head.xRot *= -1;
+                armor.head.y -= 18;
+                if(!livingEntity.isCrouching()) armor.head.y -= 6;
+                poseStack.scale(-1, -1, 1);
+                poseStack.translate(0, -1.501, 0);
+            }
+            case CHEST -> {
+                armor.rightArm.xRot *= -1;
+                armor.rightArm.yRot *= -1;
+                armor.rightArm.x *= -1;
+                armor.rightArm.y -= 20;
+                armor.leftArm.xRot *= -1;
+                armor.leftArm.yRot *= -1;
+                armor.leftArm.x *= -1;
+                armor.leftArm.y -= 20;
+                armor.body.y -= 12;
+                armor.body.xRot *= -1;
+                armor.body.yRot *= -1;
+                if(livingEntity.isCrouching()) {
+                    armor.rightArm.y += 4;
+                    armor.leftArm.y += 4;
+                    armor.body.z -= 6;
+                    armor.body.y += 2;
+                }
+                poseStack.scale(-1, -1, 1);
+                poseStack.translate(0, -1.501, 0);
+            }
+            case LEGS, FEET -> {
+                armor.rightLeg.zRot *= -1;
+                armor.leftLeg.zRot *= -1;
+                armor.body.y -= 12;
+                armor.body.xRot *= -1;
+                armor.body.yRot *= -1;
+                if(livingEntity.isCrouching()) {
+                    armor.body.z -= 6;
+                    armor.body.y += 2;
+                }
+                poseStack.scale(-1, -1, 1);
+                poseStack.translate(0, -1.501, 0);
+            }
+        }
 
         equipmentRenderer()
                 .renderLayers(equipmentclientinfo$layertype, equippable.assetId().orElseThrow(), armor, armorItem, poseStack, bufferSource, packedLight);
+        MatrixStack.pop(poseStack);
     }
 
     private void copyPropertiesTo(CustomModel<?> model, HumanoidModel<?> armor){

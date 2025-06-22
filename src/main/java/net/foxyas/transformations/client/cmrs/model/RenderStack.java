@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.foxyas.transformations.client.cmrs.RemappingVertexConsumer;
 import net.foxyas.transformations.client.cmrs.geom.ModelPart;
-import net.foxyas.transformations.client.cmrs.properties.Texture;
 import net.foxyas.transformations.client.cmrs.util.Pool;
 import org.jetbrains.annotations.NotNull;
 

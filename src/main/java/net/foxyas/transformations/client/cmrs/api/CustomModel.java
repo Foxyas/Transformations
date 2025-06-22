@@ -1,6 +1,7 @@
 package net.foxyas.transformations.client.cmrs.api;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.foxyas.transformations.client.cmrs.model.Texture;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
@@ -35,7 +36,5 @@ public interface CustomModel <E extends LivingEntity> {
 
     ResourceLocation getTexture();
 
-    void setDrawAll(boolean draw);
-
-    void setAllVisible(boolean visible);
+    Texture getTexture(int index);
 }

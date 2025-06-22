@@ -7,21 +7,22 @@ import net.foxyas.transformations.client.cmrs.api.CustomModel;
 import net.foxyas.transformations.client.cmrs.api.ModelLayer;
 import net.foxyas.transformations.client.cmrs.model.RenderStack;
 import net.foxyas.transformations.client.cmrs.model.Texture;
-import net.foxyas.transformations.client.cmrs.renderer.ExtraRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public final class Glow implements ModelLayer {
+public final class CutOut implements ModelLayer {
 
-    public static final StreamCodec<FriendlyByteBuf, Glow> CODEC = StreamCodec.of((buffer, glow) -> {
-        Int2IntArrayMap map = glow.renderIdToTexture;
+    public static final StreamCodec<FriendlyByteBuf, CutOut> CODEC = StreamCodec.of((buffer, textures) -> {
+        Int2IntArrayMap map = textures.renderIdToTexture;
         buffer.writeVarInt(map.size());
-        map.int2IntEntrySet().forEach(entry -> {
-            buffer.writeVarInt(entry.getIntKey());
-            buffer.writeVarInt(entry.getIntValue());
+        map.forEach((id, texture) -> {
+            buffer.writeVarInt(id);
+            buffer.writeVarInt(texture);
         });
     }, buffer -> {
         int size = buffer.readVarInt();
@@ -29,12 +30,12 @@ public final class Glow implements ModelLayer {
         for(int i = 0; i < size; i++) {
             map.put(buffer.readVarInt(), buffer.readVarInt());
         }
-        return new Glow(map);
+        return new CutOut(map);
     });
 
     private final Int2IntArrayMap renderIdToTexture;
 
-    public Glow(Int2IntArrayMap renderIdToTexture){
+    public CutOut(@NotNull Int2IntArrayMap renderIdToTexture){
         this.renderIdToTexture = renderIdToTexture;
     }
 
@@ -46,7 +47,7 @@ public final class Glow implements ModelLayer {
     @Override
     public void verifyTextures(List<Texture> textures) {
         renderIdToTexture.values().forEach(i -> {
-            if(textures.size() <= i) throw new IllegalStateException("");
+            if(textures.size() <= i) throw new IllegalStateException();
         });
     }
 
@@ -61,8 +62,8 @@ public final class Glow implements ModelLayer {
 
         renderIdToTexture.forEach((renderId, textureId) -> {
             Texture texture = model.getTexture(textureId);
-            stack.getOrCreate(renderId).add()
-                    .setUVRemapped(access.cmrs$getBuffer(ExtraRenderTypes.GLOW_SOLID.apply(texture.getLocation()), 0), texture);
+            if(renderId != Integer.MIN_VALUE) stack.getOrCreate(renderId).add()
+                    .setUVRemapped(access.cmrs$getBuffer(stack.defRenderType(texture.getLocation(), RenderType.ENTITY_CUTOUT), 0), texture);
         });
     }
 }

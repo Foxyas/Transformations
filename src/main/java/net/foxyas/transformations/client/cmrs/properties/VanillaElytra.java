@@ -3,7 +3,7 @@ package net.foxyas.transformations.client.cmrs.properties;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.foxyas.transformations.client.cmrs.api.CustomModel;
 import net.foxyas.transformations.client.cmrs.api.MatrixStack;
-import net.foxyas.transformations.client.cmrs.api.RenderLayerLike;
+import net.foxyas.transformations.client.cmrs.api.RenderLayer;
 import net.foxyas.transformations.client.cmrs.model.PoseTransform;
 import net.foxyas.transformations.client.cmrs.util.StreamCodecUtils;
 import net.minecraft.client.Minecraft;
@@ -27,8 +27,9 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-//probably broken
-public final class VanillaElytra implements RenderLayerLike {
+//probably broken -> it is broken
+//TODO fix
+public final class VanillaElytra implements RenderLayer {
 
     public static final StreamCodec<FriendlyByteBuf, VanillaElytra> CODEC = StreamCodec.of((buffer, vanillaElytra) -> {
             StreamCodecUtils.writeOptionally(vanillaElytra.transform, !vanillaElytra.transform.isEmpty(), buffer, PoseTransform.CODEC);

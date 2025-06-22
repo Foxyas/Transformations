@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-public interface RenderLayerLike {
+public interface RenderLayer {
 
     <E extends LivingEntity> void render(@NotNull E livingEntity, @NotNull LivingEntityRenderState state,
                                          @NotNull CustomModel<E> model, @NotNull PoseStack matrixStack,

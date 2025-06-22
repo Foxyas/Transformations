@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.foxyas.transformations.client.cmrs.api.CustomModel;
 import net.foxyas.transformations.client.cmrs.api.MatrixStack;
-import net.foxyas.transformations.client.cmrs.api.RenderLayerLike;
+import net.foxyas.transformations.client.cmrs.api.RenderLayer;
 import net.foxyas.transformations.client.cmrs.geom.ModelPart;
 import net.foxyas.transformations.client.cmrs.geom.Reusable;
 import net.foxyas.transformations.client.cmrs.model.PoseTransform;
@@ -22,7 +22,7 @@ import net.foxyas.transformations.client.cmrs.util.StreamCodecUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ItemInMawLayer implements RenderLayerLike {
+public class ItemInMawLayer implements RenderLayer {
 
     public static final StreamCodec<FriendlyByteBuf, ItemInMawLayer> CODEC = StreamCodec.of((buffer, itemInMaw) -> {
         buffer.writeUtf(itemInMaw.maw);

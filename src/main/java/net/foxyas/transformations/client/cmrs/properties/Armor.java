@@ -10,6 +10,7 @@ import net.foxyas.transformations.client.cmrs.api.BufferSourceAccess;
 import net.foxyas.transformations.client.cmrs.api.CustomModel;
 import net.foxyas.transformations.client.cmrs.api.ModelLayer;
 import net.foxyas.transformations.client.cmrs.model.RenderStack;
+import net.foxyas.transformations.client.cmrs.model.Texture;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
@@ -70,6 +71,14 @@ public final class Armor implements ModelLayer {
     @Override
     public IntSet renderIds() {
         return renderIds;
+    }
+
+    @Override
+    public void verifyTextures(List<Texture> textures) {}
+
+    @Override
+    public boolean shouldRenderInFirstPerson() {
+        return false;
     }
 
     @Override
