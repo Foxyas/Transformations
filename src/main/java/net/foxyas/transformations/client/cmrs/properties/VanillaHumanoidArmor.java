@@ -74,50 +74,23 @@ public class VanillaHumanoidArmor implements RenderLayer {
                 : EquipmentClientInfo.LayerType.HUMANOID;
         MatrixStack.push(poseStack);
 
-        switch (slot){
-            case HEAD -> {
-                armor.head.yRot *= -1;
-                armor.head.xRot *= -1;
-                armor.head.y -= 18;
-                if(!livingEntity.isCrouching()) armor.head.y -= 6;
-                poseStack.scale(-1, -1, 1);
-                poseStack.translate(0, -1.501, 0);
-            }
-            case CHEST -> {
-                armor.rightArm.xRot *= -1;
-                armor.rightArm.yRot *= -1;
-                armor.rightArm.x *= -1;
-                armor.rightArm.y -= 20;
-                armor.leftArm.xRot *= -1;
-                armor.leftArm.yRot *= -1;
-                armor.leftArm.x *= -1;
-                armor.leftArm.y -= 20;
-                armor.body.y -= 12;
-                armor.body.xRot *= -1;
-                armor.body.yRot *= -1;
-                if(livingEntity.isCrouching()) {
-                    armor.rightArm.y += 4;
-                    armor.leftArm.y += 4;
-                    armor.body.z -= 6;
-                    armor.body.y += 2;
-                }
-                poseStack.scale(-1, -1, 1);
-                poseStack.translate(0, -1.501, 0);
-            }
-            case LEGS, FEET -> {
-                armor.rightLeg.zRot *= -1;
-                armor.leftLeg.zRot *= -1;
-                armor.body.y -= 12;
-                armor.body.xRot *= -1;
-                armor.body.yRot *= -1;
-                if(livingEntity.isCrouching()) {
-                    armor.body.z -= 6;
-                    armor.body.y += 2;
-                }
-                poseStack.scale(-1, -1, 1);
-                poseStack.translate(0, -1.501, 0);
-            }
+        armor.root().getAllParts().forEach(p -> {
+            p.x *= -1;
+            p.y *= -1;
+            if(p == armor.root()) p.y += 24;
+
+            p.xRot *= -1;
+            p.yRot *= -1;
+        });
+
+        armor.body.y -= 12;//HumanoidAnim is made for models with body.y = 12. vanilla uses 24 so either make a new anim or have this thing here
+        if(livingEntity.isCrouching()) {//i'll consider changing the body pivot as it looks a bit incorrectly in third person while crouching & attacking
+            armor.body.z -= 6;
+            armor.body.y += 2;
         }
+
+        poseStack.scale(-1, -1, 1);
+        poseStack.translate(0, -1.5, 0);
 
         equipmentRenderer()
                 .renderLayers(equipmentclientinfo$layertype, equippable.assetId().orElseThrow(), armor, armorItem, poseStack, bufferSource, packedLight);
@@ -126,6 +99,7 @@ public class VanillaHumanoidArmor implements RenderLayer {
 
     private void copyPropertiesTo(CustomModel<?> model, HumanoidModel<?> armor){
         ModelPart root = model._root();
+        root.copyTo(armor.root());
         root.getDirectChild("head").copyTo(armor.head);
         root.getDirectChild("body").copyTo(armor.body);
         root.getDirectChild("right_arm").copyTo(armor.rightArm);
