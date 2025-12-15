@@ -3,6 +3,7 @@ package net.foxyas.transformations;
 import com.mojang.logging.LogUtils;
 import net.foxyas.transformations.client.cmrs.api.ModelPropertyRegistry;
 import net.foxyas.transformations.init.TransformationAttachments;
+import net.foxyas.transformations.init.TransformationRendererTypes;
 import net.foxyas.transformations.transformation.Transformation;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -45,6 +46,8 @@ public class Transformations {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         TransformationAttachments.ATTACHMENTS.register(modEventBus);
+
+        TransformationRendererTypes.RENDERERS.register(modEventBus);
 
         if(FMLEnvironment.dist.isClient()) ModelPropertyRegistry.PROPERTIES.register(modEventBus); //Server doesn't crash
     }

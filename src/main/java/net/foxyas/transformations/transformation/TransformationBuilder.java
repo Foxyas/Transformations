@@ -1,6 +1,8 @@
 package net.foxyas.transformations.transformation;
 
 import com.google.common.collect.ImmutableMultimap;
+import net.foxyas.transformations.client.renderer.TransformationRenderer;
+import net.foxyas.transformations.client.renderer.TransformationRendererType;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -12,7 +14,9 @@ import java.util.Optional;
 public class TransformationBuilder {
     public ImmutableMultimap<Holder<Attribute>, AttributeModifier> modifiers;
     @Nullable
-    public ResourceLocation modelId;
+    public ResourceLocation modelId = null;
+    @Nullable
+    public TransformationRenderer renderer = null;
 
     public TransformationBuilder() {
     }
@@ -36,7 +40,18 @@ public class TransformationBuilder {
         return this;
     }
 
-    public Transformation build() {
-        return new Transformation(Optional.of(this.modifiers), Optional.ofNullable(this.modelId));
+    public TransformationBuilder withRendererType(TransformationRendererType<?> type) {
+        this.renderer = type.createDefault();
+        return this;
     }
+
+    public TransformationBuilder withRenderer(TransformationRenderer renderer) {
+        this.renderer = renderer;
+        return this;
+    }
+
+    public Transformation build() {
+        return new Transformation(Optional.of(this.modifiers), Optional.ofNullable(this.modelId), Optional.ofNullable(renderer));
+    }
+
 }

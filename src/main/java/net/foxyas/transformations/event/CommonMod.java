@@ -2,7 +2,7 @@ package net.foxyas.transformations.event;
 
 import net.foxyas.transformations.transformation.Transformation;
 import net.foxyas.transformations.Transformations;
-import net.foxyas.transformations.init.TransformationRenderers;
+import net.foxyas.transformations.init.TransformationRendererTypes;
 import net.foxyas.transformations.network.ClientPacketHandler;
 import net.foxyas.transformations.network.packets.TransformationDataSync;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -22,9 +22,7 @@ public class CommonMod {
 
     @SubscribeEvent
     public static void onNewRegistry(NewRegistryEvent event) {
-        event.register(TransformationRenderers.RENDERERS.makeRegistry((registryBuilder -> {
-            registryBuilder.sync(true);
-        })));
+        event.register(TransformationRendererTypes.RENDERER_TYPE_REGISTRY);
     }
 
     @SubscribeEvent

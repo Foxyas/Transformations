@@ -3,9 +3,12 @@ package net.foxyas.transformations.datagen;
 import com.google.common.collect.ImmutableMultimap;
 import com.mojang.serialization.Lifecycle;
 import net.foxyas.transformations.Transformations;
+import net.foxyas.transformations.client.renderer.AuraTransformationRenderer;
+import net.foxyas.transformations.init.TransformationRendererTypes;
 import net.foxyas.transformations.transformation.Transformation;
 import net.foxyas.transformations.transformation.TransformationBuilder;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -27,7 +30,7 @@ public class DatagenEvent {
                             context.register(TEST_TRANSFORMATION, new TransformationBuilder(ImmutableMultimap.of(), Transformations.resourceLoc("test")).build());
                             context.register(HYPNO_CAT, new TransformationBuilder(ImmutableMultimap.of(), Transformations.resourceLoc("hypno_cat")).build());
                             context.register(TEST_PLAYER, new TransformationBuilder(ImmutableMultimap.of(), Transformations.resourceLoc("player")).build());
-                            context.register(TEST_AURA, new TransformationBuilder(ImmutableMultimap.of()).build());
+                            context.register(TEST_AURA, new TransformationBuilder(ImmutableMultimap.of()).withRenderer(new AuraTransformationRenderer(10, ParticleTypes.END_ROD)).build());
                         })
         );
     }
