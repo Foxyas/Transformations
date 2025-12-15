@@ -50,9 +50,9 @@ public class TransformationData {
 
         RegistryAccess access = level.registryAccess();
         Transformation transformO = null, transform = null;
-        Optional<Holder.Reference<Transformation>> optional;//Potential issue: datapack is updated at runtime -> a transformation might be removed without removing the attributes (remove attributes before server reloads datapacks & reapply after Or save attributes here to remove as necessary?)
-                                                            //same might also happen to models on client (old not removed as transformation no longer exists)
-                                                            //Foxyas: i think that this could be fixed by a simple tick-update check, logic would be like -> (!TransformationUtils.isTransformationValid(level, player)) then remove attributes and invalid transformation
+        Optional<Holder.Reference<Transformation>> optional; //Potential issue: datapack is updated at runtime -> a transformation might be removed without removing the attributes (remove attributes before server reloads datapacks & reapply after Or save attributes here to remove as necessary?)
+                                                             //same might also happen to models on client (old not removed as transformation no longer exists)
+                                                             //Foxyas: i think that this could be fixed by a simple tick-update check, logic would be like -> (!TransformationUtils.isTransformationValid(level, player)) then remove attributes and invalid transformation
         if(currentForm != null){
             optional = access.get(currentForm);
             if(optional.isPresent()) transformO = optional.get().value();
@@ -63,7 +63,7 @@ public class TransformationData {
             if(optional.isPresent()) transform = optional.get().value();
         }
 
-        if(transformO == transform) return;//catch a case where one or both of the keys are not bound
+        if(transformO == transform) return; //catch a case where one or both of the keys are not bound
 
         if(transformO != null) {
             Transformation.removeModifiers((ServerPlayer) holder, transformO);
@@ -100,7 +100,7 @@ public class TransformationData {
 
             DataResult<ResourceLocation> result = ResourceLocation.read(o.get());
             if(result.isError()) return data;
-//Do not use setForm() here -> will silently fail on world join
+            //Do not use setForm() here -> will silently fail on world join
             data.currentForm = ResourceKey.create(Transformations.TRANSFORMATION_REGISTRY, result.getOrThrow());
             return data;
         }
