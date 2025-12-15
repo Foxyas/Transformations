@@ -3,6 +3,7 @@ package net.foxyas.transformations;
 import com.mojang.logging.LogUtils;
 import net.foxyas.transformations.client.cmrs.api.ModelPropertyRegistry;
 import net.foxyas.transformations.init.TransformationAttachments;
+import net.foxyas.transformations.transformation.Transformation;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +35,10 @@ public class Transformations {
         return ResourceLocation.fromNamespaceAndPath(MODID,"textures/" + path + ".png");
     }
 
+    public static ResourceKey<Transformation> key(String path){
+        return ResourceKey.create(TRANSFORMATION_REGISTRY, resourceLoc(path));
+    }
+
     public Transformations(IEventBus modEventBus, ModContainer modContainer) {
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
@@ -41,6 +46,6 @@ public class Transformations {
 
         TransformationAttachments.ATTACHMENTS.register(modEventBus);
 
-        if(FMLEnvironment.dist.isClient()) ModelPropertyRegistry.PROPERTIES.register(modEventBus);//Server doesn't crash
+        if(FMLEnvironment.dist.isClient()) ModelPropertyRegistry.PROPERTIES.register(modEventBus); //Server doesn't crash
     }
 }

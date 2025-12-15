@@ -2,8 +2,9 @@ package net.foxyas.transformations.datagen;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.mojang.serialization.Lifecycle;
-import net.foxyas.transformations.Transformation;
 import net.foxyas.transformations.Transformations;
+import net.foxyas.transformations.transformation.Transformation;
+import net.foxyas.transformations.transformation.TransformationBuilder;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,18 +14,20 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 @EventBusSubscriber(modid = Transformations.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class DatagenEvent {
 
-    private static final ResourceKey<Transformation> TEST_TRANSFORMATION = key("test");
-    private static final ResourceKey<Transformation> HYPNO_CAT = key("hypno_cat");
-    private static final ResourceKey<Transformation> TEST_PLAYER = key("simple_player");
+    public static final ResourceKey<Transformation> TEST_TRANSFORMATION = key("test");
+    public static final ResourceKey<Transformation> HYPNO_CAT = key("hypno_cat");
+    public static final ResourceKey<Transformation> TEST_PLAYER = key("simple_player");
+    public static final ResourceKey<Transformation> TEST_AURA = key("test_aura");
 
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent.Client event){
         event.createDatapackRegistryObjects(
                 new RegistrySetBuilder()
                         .add(Transformations.TRANSFORMATION_REGISTRY, Lifecycle.stable(), context -> {
-                            context.register(TEST_TRANSFORMATION, new Transformation(ImmutableMultimap.of(), Transformations.resourceLoc("test")));
-                            context.register(HYPNO_CAT, new Transformation(ImmutableMultimap.of(), Transformations.resourceLoc("hypno_cat")));
-                            context.register(TEST_PLAYER, new Transformation(ImmutableMultimap.of(), Transformations.resourceLoc("player")));
+                            context.register(TEST_TRANSFORMATION, new TransformationBuilder(ImmutableMultimap.of(), Transformations.resourceLoc("test")).build());
+                            context.register(HYPNO_CAT, new TransformationBuilder(ImmutableMultimap.of(), Transformations.resourceLoc("hypno_cat")).build());
+                            context.register(TEST_PLAYER, new TransformationBuilder(ImmutableMultimap.of(), Transformations.resourceLoc("player")).build());
+                            context.register(TEST_AURA, new TransformationBuilder(ImmutableMultimap.of()).build());
                         })
         );
     }

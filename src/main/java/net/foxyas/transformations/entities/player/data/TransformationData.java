@@ -1,7 +1,7 @@
 package net.foxyas.transformations.entities.player.data;
 
 import com.mojang.serialization.DataResult;
-import net.foxyas.transformations.Transformation;
+import net.foxyas.transformations.transformation.Transformation;
 import net.foxyas.transformations.Transformations;
 import net.foxyas.transformations.init.TransformationAttachments;
 import net.foxyas.transformations.network.packets.TransformationDataSync;

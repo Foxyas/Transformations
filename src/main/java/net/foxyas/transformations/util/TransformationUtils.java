@@ -1,12 +1,11 @@
 package net.foxyas.transformations.util;
 
-import net.foxyas.transformations.Transformation;
+import net.foxyas.transformations.transformation.Transformation;
 import net.foxyas.transformations.Transformations;
 import net.foxyas.transformations.entities.player.data.TransformationData;
 import net.foxyas.transformations.init.TransformationAttachments;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -14,8 +13,6 @@ import net.minecraft.world.level.LevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**

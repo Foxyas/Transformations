@@ -3,7 +3,7 @@ package net.foxyas.transformations.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import net.foxyas.transformations.Transformation;
+import net.foxyas.transformations.transformation.Transformation;
 import net.foxyas.transformations.Transformations;
 import net.foxyas.transformations.util.TransformationUtils;
 import net.minecraft.commands.CommandSourceStack;

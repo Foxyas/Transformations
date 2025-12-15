@@ -1,6 +1,6 @@
 package net.foxyas.transformations.network;
 
-import net.foxyas.transformations.Transformation;
+import net.foxyas.transformations.transformation.Transformation;
 import net.foxyas.transformations.client.cmrs.CustomModelManager;
 import net.foxyas.transformations.client.cmrs.network.ModelSetReason;
 import net.foxyas.transformations.entities.player.data.TransformationData;
@@ -40,8 +40,9 @@ public final class ClientPacketHandler {
                 optional = access.get(key);
                 if(optional.isPresent()){
                     transform = optional.get().value();
-
-                    CustomModelManager.getInstance().removePlayerModel(minecraft.player, transform.modelId(), 1);
+                    if (transform.modelId.isPresent()) {
+                        CustomModelManager.getInstance().removePlayerModel(minecraft.player, transform.modelId.get(), 1);
+                    }
                 }
             }
 
@@ -52,8 +53,9 @@ public final class ClientPacketHandler {
             optional = access.get(key);
             if (optional.isEmpty()) return;
             transform = optional.get().value();
-
-            CustomModelManager.getInstance().setPlayerModel(minecraft.player, transform.modelId(), 1, false, ModelSetReason.MOD);
+            if (transform.modelId.isPresent()) {
+                CustomModelManager.getInstance().setPlayerModel(minecraft.player, transform.modelId.get(), 1, false, ModelSetReason.MOD);
+            }
         });
     }
 }

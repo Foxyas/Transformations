@@ -1,6 +1,6 @@
 package net.foxyas.transformations.network.packets;
 
-import net.foxyas.transformations.Transformation;
+import net.foxyas.transformations.transformation.Transformation;
 import net.foxyas.transformations.Transformations;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
